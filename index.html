@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arduino Adventure Lab — Starter Kit Projects</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2e;--panel2:#18233d;--text:#edf3ff;--muted:#9fb0cc;--accent:#58e1a7;--accent2:#67a7ff;--warn:#ffd166;--danger:#ff7b8a;--border:#293653}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0%,#17315a 0,#0b1020 38%),#0b1020;color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+header{padding:56px 6vw 34px;max-width:1250px;margin:auto} .eyebrow{color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
+h1{font-size:clamp(38px,7vw,72px);line-height:.98;margin:12px 0 18px;max-width:900px} .hero{color:var(--muted);font-size:18px;max-width:760px}
+.badges{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}.badge{background:#16243d;border:1px solid var(--border);padding:7px 11px;border-radius:999px}
+main{max-width:1250px;margin:auto;padding:0 6vw 60px}.toolbar{position:sticky;top:10px;z-index:3;display:flex;gap:10px;flex-wrap:wrap;background:#0d1527dd;backdrop-filter:blur(12px);padding:12px;border:1px solid var(--border);border-radius:16px;margin:14px 0 28px}
+input,select{background:#101a2f;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:11px 12px;outline:none}input{min-width:230px;flex:1}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{cursor:pointer;border:1px solid var(--border);background:#101a2f;color:var(--muted);border-radius:999px;padding:8px 12px}.chip.active{background:#183e39;color:var(--accent);border-color:#2d8069}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}.card{background:linear-gradient(145deg,var(--panel),#10182a);border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;flex-direction:column;min-height:250px;box-shadow:0 12px 30px #0003}.icon{font-size:31px}.card h2{font-size:20px;margin:10px 0 6px}.desc{color:var(--muted);margin:0 0 15px}.meta{display:flex;gap:7px;flex-wrap:wrap;margin-top:auto}.tag{font-size:12px;padding:5px 8px;border-radius:7px;background:#1a2742;color:#b9c8e3}.level-easy{color:var(--accent)}.level-med{color:var(--warn)}.level-hard{color:var(--danger)}
+button{font:inherit;cursor:pointer}.open{margin-top:14px;border:0;border-radius:10px;padding:10px 13px;background:var(--accent);color:#062018;font-weight:800}.empty{text-align:center;color:var(--muted);padding:50px;display:none}
+.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal.show{display:flex}.dialog{max-width:820px;width:100%;max-height:90vh;overflow:auto;background:#10192b;border:1px solid var(--border);border-radius:20px;padding:26px}.close{float:right;background:none;border:0;color:var(--muted);font-size:25px}.cols{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:700px){.cols{grid-template-columns:1fr}} pre{background:#080e19;border:1px solid var(--border);padding:0;border-radius:12px;overflow:auto;font-size:13px;line-height:1.65;margin:0}.code-editor{display:block;margin:0;padding:10px 0;counter-reset:line}.code-line{display:block;white-space:pre;min-height:1.65em;padding-right:16px}.line-no{display:inline-block;width:48px;margin-right:14px;padding-right:12px;text-align:right;color:#60708e;border-right:1px solid #25334d;user-select:none}.code-text{color:#cfe1ff}.tip{padding:12px 14px;border-left:3px solid var(--accent2);background:#122039;color:#cbd8ed;border-radius:8px}
+footer{color:var(--muted);text-align:center;padding:30px}
+ .build-section{margin-top:22px}.wiring{width:100%;border-collapse:collapse;background:#0b1322;border:1px solid var(--border)}.wiring th,.wiring td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--border)}.wiring th{color:var(--accent);font-size:13px}.wiring tr:last-child td{border-bottom:0}.steps{display:grid;gap:8px;padding:0;list-style:none;counter-reset:step}.steps li{counter-increment:step;background:#121f35;border:1px solid var(--border);padding:10px 12px;border-radius:10px}.steps li:before{content:counter(step);display:inline-grid;place-items:center;width:25px;height:25px;margin-right:9px;border-radius:50%;background:#1d4a41;color:var(--accent);font-weight:800}.code-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.copy{border:1px solid var(--border);background:#17243b;color:var(--text);border-radius:8px;padding:7px 10px}.build-btn{margin-top:14px;border:0;border-radius:10px;padding:10px 14px;background:var(--accent);color:#062018;font-weight:800}
+.combo-section{margin:36px 0;padding:28px;border:1px solid var(--border);border-radius:20px;background:linear-gradient(180deg,#101a2c,#0b1321)}
+.combo-builder{display:grid;grid-template-columns:280px 1fr;gap:24px;margin-top:20px}
+.combo-picks{display:flex;flex-direction:column;gap:9px}
+.combo-check{padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#0b1424;cursor:pointer}
+.combo-check input{margin-right:8px}
+.combo-result{min-width:0}
+.combo-empty{height:100%;min-height:220px;display:grid;place-items:center;border:1px dashed var(--border);border-radius:14px;color:#8291aa;text-align:center;padding:20px}
+.combo-card{border:1px solid var(--border);border-radius:16px;padding:20px;background:#0a1220}
+.combo-parts{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0 20px}
+.combo-pill{padding:6px 9px;border-radius:999px;background:#17243a;font-size:12px}
+.combo-code{margin-top:14px}
+.combo-code pre{max-height:420px}
+@media(max-width:800px){.combo-builder{grid-template-columns:1fr}}
+
+.game-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:22px}
+.game-cards .combo-card{height:100%}
+@media(max-width:850px){.game-cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<div class="eyebrow">Arduino Starter Kit • Adventure Lab</div>
+<h1>Build. Tinker. Make something blink.</h1>
+<p class="hero">A project playground for a typical Arduino UNO-style starter kit. Search by idea, filter by difficulty, and open a project for the parts list, wiring notes, and starter code.</p>
+<div class="badges"><span class="badge">⚡ 45 projects</span><span class="badge">🔎 instant search</span><span class="badge">🧩 beginner → advanced</span><span class="badge">📦 starter-kit friendly</span></div>
+</header>
+<main>
+<div class="toolbar">
+<input id="search" placeholder="Search projects, parts, or ideas…">
+<select id="level"><option value="">All levels</option><option>Easy</option><option>Medium</option><option>Advanced</option></select>
+<select id="part"><option value="">All parts</option><option>LED</option><option>Button</option><option>Buzzer</option><option>Servo</option><option>Potentiometer</option><option>Sensor</option><option>LCD</option><option>Motor</option></select>
+<div class="chips" id="chips"></div>
+</div>
+
+
+<section id="game-lab" class="section combo-section">
+  <div class="eyebrow">🎮 ARDUINO GAME ZONE</div>
+  <h2>Fun little games</h2>
+  <p class="hero">Quick games you can actually build with common starter-kit parts. Pick one, wire it up, upload the sketch, and play!</p>
+
+  <div class="game-cards">
+    <article class="combo-card">
+      <div class="eyebrow">⚡ GAME 01</div>
+      <h2>Reaction Rush</h2>
+      <p>Wait for the LED, then hit the button as fast as possible. Your reaction time appears in the Serial Monitor.</p>
+      <h3>🧰 Parts</h3>
+      <p>Arduino Uno, LED, 220Ω resistor, pushbutton</p>
+      <h3>🔌 Wiring</h3>
+      <ul>
+        <li>LED → D9 through 220Ω → GND</li>
+        <li>Button → D2 and GND</li>
+      </ul>
+      <div class="combo-code">
+        <div class="code-head"><h3>💻 Arduino IDE code</h3><button class="copy" onclick="copyGameCode('reaction', this)">📋 Copy code</button></div>
+        <pre><code id="game-reaction"></code></pre>
+      </div>
+    </article>
+
+    <article class="combo-card">
+      <div class="eyebrow">🎯 GAME 02</div>
+      <h2>Lucky Target</h2>
+      <p>Three LEDs flash in a pattern. Press the button when the target LED is on to score points.</p>
+      <h3>🧰 Parts</h3>
+      <p>3 LEDs, 3×220Ω resistors, pushbutton</p>
+      <h3>🔌 Wiring</h3>
+      <ul>
+        <li>LEDs → D8, D9, D10 through 220Ω resistors</li>
+        <li>Button → D2 and GND</li>
+      </ul>
+      <div class="combo-code">
+        <div class="code-head"><h3>💻 Arduino IDE code</h3><button class="copy" onclick="copyGameCode('target', this)">📋 Copy code</button></div>
+        <pre><code id="game-target"></code></pre>
+      </div>
+    </article>
+
+    <article class="combo-card">
+      <div class="eyebrow">🧠 GAME 03</div>
+      <h2>Simon Says Mini</h2>
+      <p>Watch the LEDs, then repeat the sequence with buttons. Each round gets longer!</p>
+      <h3>🧰 Parts</h3>
+      <p>3 LEDs, 3×220Ω resistors, 3 pushbuttons</p>
+      <h3>🔌 Wiring</h3>
+      <ul>
+        <li>LEDs → D8, D9, D10 through 220Ω resistors</li>
+        <li>Buttons → D2, D3, D4 and GND</li>
+      </ul>
+      <div class="combo-code">
+        <div class="code-head"><h3>💻 Arduino IDE code</h3><button class="copy" onclick="copyGameCode('simon', this)">📋 Copy code</button></div>
+        <pre><code id="game-simon"></code></pre>
+      </div>
+    </article>
+
+    <article class="combo-card">
+      <div class="eyebrow">🎲 GAME 04</div>
+      <h2>Digital Dice</h2>
+      <p>Press the button and the LEDs display a random number from 1 to 6 like a tiny electronic dice.</p>
+      <h3>🧰 Parts</h3>
+      <p>6 LEDs, 6×220Ω resistors, pushbutton</p>
+      <h3>🔌 Wiring</h3>
+      <ul>
+        <li>LEDs → D3–D8 through 220Ω resistors</li>
+        <li>Button → D2 and GND</li>
+      </ul>
+      <div class="combo-code">
+        <div class="code-head"><h3>💻 Arduino IDE code</h3><button class="copy" onclick="copyGameCode('dice', this)">📋 Copy code</button></div>
+        <pre><code id="game-dice"></code></pre>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section id="combo-lab" class="section combo-section">
+  <div class="eyebrow">🧩 COMBINE LAB</div>
+  <h2>Build bigger projects from smaller ones</h2>
+  <p class="hero">Pick several projects or parts, and the lab creates a bigger mash-up with combined wiring, parts, and Arduino IDE code.</p>
+
+  <div class="combo-builder">
+    <div class="combo-picks">
+      <h3>Choose your modules</h3>
+      <label class="combo-check"><input type="checkbox" value="Motion Detector"> 🕵️ Motion Detector</label>
+      <label class="combo-check"><input type="checkbox" value="Distance Beeper"> 📡 Distance Sensor</label>
+      <label class="combo-check"><input type="checkbox" value="RGB Mood Lamp"> 🌈 RGB Mood Lamp</label>
+      <label class="combo-check"><input type="checkbox" value="Servo Scanner"> 🧭 Servo Scanner</label>
+      <label class="combo-check"><input type="checkbox" value="Buzzer Piano"> 🎶 Buzzer</label>
+      <label class="combo-check"><input type="checkbox" value="Night Light"> 🔦 Light Sensor</label>
+      <label class="combo-check"><input type="checkbox" value="Pushbutton Lamp"> 🔘 Button</label>
+      <label class="combo-check"><input type="checkbox" value="Temperature Monitor"> 🌡️ Temperature Sensor</label>
+      <button class="build-btn" onclick="buildCombo()">✨ Combine selected projects</button>
+    </div>
+
+    <div id="combo-result" class="combo-result">
+      <div class="combo-empty">Choose 2 or more modules to invent a bigger project.</div>
+    </div>
+  </div>
+</section>
+<div class="grid" id="grid"></div><div class="empty" id="empty">No projects match those filters.</div>
+</main>
+<div class="modal" id="modal"><div class="dialog"><button class="close" onclick="closeModal()">×</button><div id="detail"></div></div></div>
+<footer>Arduino Adventure Lab • Designed as a starter-kit learning playground. Always check your board and module voltage/pinout before wiring.</footer>
+<script>
+const projects=[
+["01","🌈","Rainbow LED","Easy","LED","Cycle through three LEDs to make a tiny status light.","LEDs, 220Ω resistors, breadboard, jumper wires","Connect each LED through its resistor to digital pins 9–11; connect cathodes to GND.","const int leds[] = {9,10,11};\\nvoid setup(){ for(int p:leds) pinMode(p,OUTPUT); }\\nvoid loop(){\\n  for(int p:leds){ digitalWrite(p,HIGH); delay(180); digitalWrite(p,LOW); }\\n}"],
+["02","🚦","Mini Traffic Light","Easy","LED","Recreate a traffic-light sequence with red, yellow and green LEDs.","3 LEDs, 3×220Ω resistors","Use pins 10, 9 and 8. Each LED needs its own resistor.","void loop(){\\n digitalWrite(10,HIGH); delay(3000);\\n digitalWrite(10,LOW); digitalWrite(9,HIGH); delay(1000);\\n digitalWrite(9,LOW); digitalWrite(8,HIGH); delay(3000);\\n digitalWrite(8,LOW);\\n}"],
+["03","🎛️","Dimmer Knob","Easy","Potentiometer","Turn a potentiometer to control an LED's brightness.","Potentiometer, LED, 220Ω resistor","Pot middle pin → A0. LED → PWM pin 9 through a resistor.","int v;\\nvoid loop(){ v=analogRead(A0); analogWrite(9,map(v,0,1023,0,255)); }"],
+["04","🔘","Pushbutton Lamp","Easy","Button","Press a button to toggle an LED.","Button, LED, resistor","Use INPUT_PULLUP for the button; connect the button between pin 2 and GND.","void loop(){\\n if(digitalRead(2)==LOW) digitalWrite(9,HIGH);\\n else digitalWrite(9,LOW);\\n}"],
+["05","🎵","Buzzer Piano","Easy","Buzzer","Play different notes by pressing different buttons.","Passive buzzer, 3 buttons","Buttons to pins 2–4 using INPUT_PULLUP; buzzer on pin 8.","int notes[]={262,330,392};\\nvoid loop(){ for(int i=0;i<3;i++) if(!digitalRead(2+i)) tone(8,notes[i]); else noTone(8); }"],
+["06","⏱️","Reaction Timer","Easy","Button","Test how quickly you can press after an LED lights.","LED, button, 220Ω resistor","Randomly wait, light the LED, then measure millis() until the button is pressed.","unsigned long t;\\nvoid loop(){ delay(random(1000,4000)); digitalWrite(9,HIGH); t=millis(); while(digitalRead(2)==HIGH){} Serial.println(millis()-t); digitalWrite(9,LOW); delay(1000); }"],
+["07","🚪","Secret Button Lock","Medium","Servo","Enter a button sequence to move a servo as a simple latch demo.","Servo, 3 buttons","Servo signal to a PWM-capable digital pin; power it appropriately for your servo.","#include <Servo.h>\\nServo s; int pos=0;\\nvoid setup(){s.attach(9); pinMode(2,INPUT_PULLUP);pinMode(3,INPUT_PULLUP);pinMode(4,INPUT_PULLUP);}\\nvoid loop(){ if(!digitalRead(2)&&!digitalRead(3)){s.write(90);delay(500);} }"],
+["08","🌡️","Temperature Monitor","Easy","Sensor","Read a temperature sensor and print values to Serial Monitor.","Analog temperature sensor (or compatible module)","Wire the sensor according to its datasheet; analog output can go to A0.","void loop(){ int raw=analogRead(A0); Serial.println(raw); delay(500); }"],
+["09","💡","Night Light","Easy","Sensor","Use an LDR to turn an LED on when it gets dark.","LDR, resistor, LED","Make a voltage divider with the LDR and a resistor; read the divider on A0.","void loop(){ int light=analogRead(A0); digitalWrite(9, light<400); delay(50); }"],
+["10","📟","Hello LCD","Medium","LCD","Show a custom message on a character LCD.","16×2 LCD, potentiometer, jumper wires","Use the LCD library and wire the display according to its module type.","#include <LiquidCrystal.h>\\nLiquidCrystal lcd(12,11,5,4,3,2);\\nvoid setup(){lcd.begin(16,2);lcd.print(\"Hello, maker!\");}\\nvoid loop(){}"],
+["11","🎚️","LCD Knob Meter","Medium","LCD","Turn a potentiometer and display its value as a simple meter.","16×2 LCD, potentiometer","Read A0 and map 0–1023 to a 0–100 scale.","int v;\\nvoid loop(){v=map(analogRead(A0),0,1023,0,100);lcd.setCursor(0,0);lcd.print(\"Value: \");lcd.print(v);lcd.print(\"   \");delay(100);}"],
+["12","🌀","Servo Scanner","Medium","Servo","Sweep a servo back and forth like a tiny scanner.","Servo","Signal on a suitable digital pin; avoid powering larger servos directly from the board's 5V pin.","#include <Servo.h>\\nServo s;\\nvoid setup(){s.attach(9);}\\nvoid loop(){for(int a=0;a<=180;a++){s.write(a);delay(10);}for(int a=180;a>=0;a--){s.write(a);delay(10);}}"],
+["13","🚨","Alarm Button","Easy","Buzzer","Press a button to trigger an alarm tone and flashing LED.","Button, buzzer, LED","Use INPUT_PULLUP and a passive buzzer.","void loop(){if(!digitalRead(2)){tone(8,900);digitalWrite(9,HIGH);}else{noTone(8);digitalWrite(9,LOW);}}"],
+["14","🌧️","Rain Alert","Medium","Sensor","Use a rain/water sensor module to detect wetness and alert with a buzzer.","Rain sensor module, buzzer, LED","Connect analog output to A0 and calibrate the threshold for your sensor.","int wet;\\nvoid loop(){wet=analogRead(A0);if(wet<500) tone(8,700);else noTone(8);delay(100);}"],
+["15","📏","Distance Beeper","Medium","Sensor","Use an HC-SR04-style ultrasonic sensor to make a proximity beeper.","Ultrasonic sensor, buzzer","TRIG/ECHO are digital signals. Keep the sensor's voltage requirements in mind.","long d;\\nvoid loop(){digitalWrite(7,LOW);delayMicroseconds(2);digitalWrite(7,HIGH);delayMicroseconds(10);digitalWrite(7,LOW);d=pulseIn(6,HIGH)/58; if(d<20) tone(8,1000); else noTone(8);delay(60);}"],
+["16","🚗","Tiny Servo Radar","Advanced","Servo","Sweep an ultrasonic sensor and print angle + distance to Serial.","Servo, ultrasonic sensor","Mount the sensor on the servo horn carefully; keep wires flexible.","// Combine Servo + HC-SR04 code.\\n// Sweep 20°–160°, read distance at each step,\\n// and print: angle,distance to Serial Monitor."],
+["17","🎲","Electronic Dice","Easy","LED","Shake or press a button to generate a random number 1–6.","6 LEDs or LED matrix, button","Display the result as dots or a row of LEDs.","randomSeed(analogRead(A5));\\nvoid loop(){if(!digitalRead(2)){int n=random(1,7);Serial.println(n);delay(500);}}"],
+["18","🧠","Memory Game","Medium","Button","Arduino flashes a sequence; repeat it with buttons to advance levels.","4 LEDs, 4 buttons, buzzer","Use arrays to store the generated sequence and compare player input.","int seq[20]; int level=1;\\n// Generate LEDs with random(), then read buttons\\n// and compare each answer to seq[]."],
+["19","🎹","Mini Keyboard","Medium","Button","Four buttons become four notes with a buzzer.","4 buttons, passive buzzer","Each button selects a frequency. INPUT_PULLUP keeps wiring simple.","int notes[]={262,330,392,523};\\nvoid loop(){for(int i=0;i<4;i++)if(!digitalRead(2+i))tone(8,notes[i]);else noTone(8);}"],
+["20","🌡️","Thermometer Display","Medium","Sensor","Read a temperature sensor and show a friendly value on an LCD.","Temperature sensor, LCD","Use the exact conversion formula for your sensor model.","// Read sensor → convert using its datasheet formula →\\n// lcd.setCursor() and print the result."],
+["21","🪄","RGB Mood Lamp","Medium","LED","Mix an RGB LED to make colors from three PWM channels.","RGB LED, 3×220Ω resistors, potentiometer optional","Use PWM pins and the correct common-anode/common-cathode wiring.","analogWrite(9,255); analogWrite(10,80); analogWrite(11,0);"],
+["22","🌬️","Mini Fan Controller","Advanced","Motor","Control a small DC motor with a transistor/MOSFET and PWM.","DC motor, transistor/MOSFET, diode, external supply","Never drive a motor directly from an Arduino I/O pin. Add a flyback diode and suitable driver.","analogWrite(5,180); // PWM to a proper motor driver\\ndelay(1000);"],
+["23","📡","IR Remote Lamp","Medium","LED","Use an IR receiver to control an LED or relay module.","IR receiver, LED","Install a suitable IR decoding library and identify your remote's codes.","// Decode the received IR command and map\\n// one button to digitalWrite(9,HIGH/LOW)."],
+["24","🎮","Serial Game","Easy","Button","Make a tiny reaction or guessing game controlled from Serial Monitor.","USB cable, button optional","Use Serial.read() to accept commands such as R, G, or B.","if(Serial.available()){char c=Serial.read(); if(c=='r') Serial.println(\"You picked red!\");}"],
+["25","📊","Serial Plotter Sensor","Easy","Sensor","Turn any analog sensor into a live graph in Arduino IDE's Serial Plotter.","Any analog sensor","Print one numeric value per line for an instant graph.","void loop(){Serial.println(analogRead(A0));delay(20);}"],
+["26","🔢","Digital Counter","Easy","Button","Press a button to increment a counter and show it in Serial Monitor.","Button","Debounce the button so one press counts once.","int count=0; bool old=HIGH;\\nvoid loop(){bool now=digitalRead(2);if(old==HIGH&&now==LOW){count++;Serial.println(count);delay(30);}old=now;}"],
+["27","🌱","Plant Moisture Helper","Medium","Sensor","Read soil moisture and show when a plant may need attention.","Soil-moisture sensor, LED","Calibrate dry/wet readings for your particular soil and sensor.","int m=analogRead(A0); digitalWrite(9,m>700); delay(500);"],
+["28","🚦","Crosswalk Button","Medium","Button","Build a pedestrian crossing sequence with a request button.","LEDs, button, buzzer","Use a state machine so the lights can run without long blocking delays.","// States: CAR_GREEN → CAR_YELLOW → WALK → FLASH.\\n// A button request starts the next safe transition."],
+["29","🔐","Password Door Demo","Advanced","Servo","Type a short code in Serial Monitor to command a servo demo latch.","Servo, USB/Serial","This is a learning demo, not a security device.","String pass=\"1234\";\\n// Read Serial input, compare with pass,\\n// then move the servo for a demo unlock."],
+["30","🤖","Mini Robot Brain","Advanced","Motor","Combine sensors, LEDs and a motor driver into a tiny autonomous rover.","2 DC motors, driver, distance sensor, battery pack","Use a proper motor driver and separate motor power; share grounds.","// Read distance. If obstacle is near: stop,\\n// reverse briefly, turn, then continue forward."],
+["31","🌡️","Mini Weather Station","Medium","Sensor","Read a temperature and light sensor and print both values to Serial Monitor.","Analog temperature sensor, LDR, 2 resistors","Temperature sensor output → A0. LDR divider output → A1.",""],
+["32","🚥","Pedestrian Crossing","Easy","Button","Press a button to start a pedestrian crossing sequence.","Button, 3 LEDs, resistors, buzzer","Button → pin 2 using INPUT_PULLUP. Red → 10, yellow → 9, green → 8, buzzer → 7.",""],
+["33","💓","Heartbeat LED","Easy","LED","Make an LED pulse smoothly like a heartbeat.","LED, 220Ω resistor","LED anode → PWM pin 9 through 220Ω. LED cathode → GND.",""],
+["34","🎶","Musical Doorbell","Easy","Button","Press a button and play a short melody on a buzzer.","Button, passive buzzer","Button → pin 2 using INPUT_PULLUP. Buzzer + → pin 8. Buzzer − → GND.",""],
+["35","🔦","Automatic Flashlight","Easy","Sensor","Automatically turn an LED on when the room gets dark.","LDR, resistor, LED, 220Ω resistor","LDR divider output → A0. LED → pin 9 through 220Ω.",""],
+["36","🧭","Servo Gauge","Easy","Servo","Use a potentiometer to move a servo from 0° to 180°.","Potentiometer, servo","Pot middle → A0. Servo signal → pin 9. Share GND.",""],
+["37","🕵️","Motion Detector","Medium","Sensor","Detect movement with a PIR sensor and flash an LED.","PIR sensor, LED, 220Ω resistor","PIR OUT → pin 2. LED → pin 9 through 220Ω.",""],
+["38","🌊","Water Level Alarm","Medium","Sensor","Use a water-level sensor to trigger an LED and buzzer.","Water-level sensor, LED, buzzer","Sensor analog output → A0. LED → pin 9. Buzzer → pin 8.",""],
+["39","🧮","Reaction Scoreboard","Medium","Button","Play three reaction rounds and calculate the average time.","LED, button, 220Ω resistor","LED → pin 9. Button → pin 2 using INPUT_PULLUP.",""],
+["40","🎰","Mini Slot Machine","Easy","LED","Press a button to spin three LEDs and stop on a result.","3 LEDs, 3×220Ω resistors, button","LEDs → pins 8, 9, 10. Button → pin 2 using INPUT_PULLUP.",""],
+["41","🧊","Temperature Warning","Easy","Sensor","Turn on an LED and buzzer when a sensor reading passes a threshold.","Analog temperature sensor, LED, buzzer","Sensor output → A0. LED → pin 9. Buzzer → pin 8.",""],
+["42","🔊","Light Theremin","Medium","Sensor","Use an LDR to control the pitch of a buzzer.","LDR, resistor, passive buzzer","LDR divider output → A0. Buzzer + → pin 8. Buzzer − → GND.",""],
+["43","🎯","Button Target Game","Easy","Button","Hit the button while the target LED is lit to score points.","LED, button, 220Ω resistor","LED → pin 9 through 220Ω. Button → pin 2 using INPUT_PULLUP.",""],
+["44","🌀","LED Spinner","Easy","LED","Create a spinning-light effect using six LEDs.","6 LEDs, 6×220Ω resistors","Connect LEDs through resistors to pins 3–8. All cathodes → GND.",""],
+["45","📡","Ultrasonic Parking Helper","Medium","Sensor","Use distance to control how quickly a buzzer beeps as you approach an object.","HC-SR04 ultrasonic sensor, passive buzzer","TRIG → 7, ECHO → 6, buzzer → 8. VCC/GND → 5V/GND.",""]
+];
+
+const grid=document.getElementById('grid'), search=document.getElementById('search'), level=document.getElementById('level'), part=document.getElementById('part'), empty=document.getElementById('empty');
+function card(p){return `<article class="card"><div class="icon">${p[1]}</div><h2>${p[2]}</h2><p class="desc">${p[5]}</p><div class="meta"><span class="tag">${p[3]}</span><span class="tag">${p[4]}</span></div><button class="open" onclick="show(${JSON.stringify(p).replaceAll('"','&quot;')})">🔧 Build this project →</button></article>`}
+function render(){let q=search.value.toLowerCase(), l=level.value, pt=part.value;let list=projects.filter(p=>(!q||p.slice(1).join(' ').toLowerCase().includes(q))&&(!l||p[3]===l)&&(!pt||p[4]===pt));grid.innerHTML=list.map(card).join('');empty.style.display=list.length?'none':'block'}
+function wiringRows(p){
+  const rows={
+    "LED":[["LED anode (+)","Digital pin 9 through 220Ω resistor"],["LED cathode (−)","GND"]],
+    "Button":[["Button leg 1","Digital pin 2"],["Button leg 2","GND (using INPUT_PULLUP)"]],
+    "Buzzer":[["Buzzer +","Digital pin 8"],["Buzzer −","GND"]],
+    "Servo":[["Servo signal","Digital pin 9"],["Servo VCC","5V or suitable external supply"],["Servo GND","GND; share ground with Arduino"]],
+    "Potentiometer":[["Outer pin","5V"],["Middle pin","A0"],["Other outer pin","GND"]],
+    "Sensor":[["Sensor VCC","5V (check your module datasheet)"],["Sensor GND","GND"],["Sensor signal","A0 or the project's specified digital pin"]],
+    "LCD":[["LCD VCC","5V"],["LCD GND","GND"],["LCD signal pins","Use the pins shown in the project code"]],
+    "Motor":[["Motor driver input","Arduino PWM/digital pin"],["Motor power","Separate suitable motor supply"],["Motor driver GND","Common GND with Arduino"],["Motor","Motor-driver output — never directly from an Arduino I/O pin"]]
+  };
+  let r=rows[p[4]]||[["Component signal","Use the pin described in the project notes"],["Power","Use the module's specified supply"],["Ground","Arduino GND"]];
+  if(p[2].includes("Traffic")) r=[["Red LED","Pin 10 → 220Ω → LED → GND"],["Yellow LED","Pin 9 → 220Ω → LED → GND"],["Green LED","Pin 8 → 220Ω → LED → GND"]];
+  if(p[2].includes("Dimmer")) r=[["Pot middle pin","A0"],["Pot outer pins","5V and GND"],["LED","Pin 9 → 220Ω → LED → GND"]];
+  if(p[2].includes("Distance")) r=[["HC-SR04 TRIG","Pin 7"],["HC-SR04 ECHO","Pin 6"],["HC-SR04 VCC/GND","5V / GND"],["Buzzer +","Pin 8"],["Buzzer −","GND"]];
+  return `<table class="wiring"><thead><tr><th>Part / connection</th><th>Connect to</th></tr></thead><tbody>${r.map(x=>`<tr><td>${x[0]}</td><td>${x[1]}</td></tr>`).join("")}</tbody></table>`;
+}
+function buildSteps(){
+  return `<ol class="steps"><li>Turn the Arduino off and place the components on the breadboard.</li><li>Connect <strong>GND</strong> first, then power connections.</li><li>Follow the wiring table and double-check every pin.</li><li>Connect the Arduino by USB and open Arduino IDE.</li><li>Paste the code below, select your board and port, then upload it.</li><li>Test the project and adjust the sensor threshold or timing if needed.</li></ol>`;
+}
+function escapeHTML(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+function getArduinoCode(p){
+  const codes = {
+    "Rainbow LED": `const int leds[] = {9, 10, 11};
+
+void setup() {
+  for (int pin : leds) {
+    pinMode(pin, OUTPUT);
+  }
+}
+
+void loop() {
+  for (int pin : leds) {
+    digitalWrite(pin, HIGH);
+    delay(180);
+    digitalWrite(pin, LOW);
+  }
+}`,
+    "Mini Traffic Light": `const int RED = 10;
+const int YELLOW = 9;
+const int GREEN = 8;
+
+void setup() {
+  pinMode(RED, OUTPUT);
+  pinMode(YELLOW, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(GREEN, HIGH);
+  delay(3000);
+  digitalWrite(GREEN, LOW);
+
+  digitalWrite(YELLOW, HIGH);
+  delay(1000);
+  digitalWrite(YELLOW, LOW);
+
+  digitalWrite(RED, HIGH);
+  delay(3000);
+  digitalWrite(RED, LOW);
+}`,
+    "Dimmer Knob": `const int POT = A0;
+const int LED = 9;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  int value = analogRead(POT);
+  int brightness = map(value, 0, 1023, 0, 255);
+  analogWrite(LED, brightness);
+}`,
+    "Pushbutton Lamp": `const int BUTTON = 2;
+const int LED = 9;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    digitalWrite(LED, HIGH);
+  } else {
+    digitalWrite(LED, LOW);
+  }
+}`,
+    "Buzzer Piano": `const int BUZZER = 8;
+const int buttons[] = {2, 3, 4};
+const int notes[] = {262, 330, 392};
+
+void setup() {
+  for (int pin : buttons) {
+    pinMode(pin, INPUT_PULLUP);
+  }
+}
+
+void loop() {
+  bool playing = false;
+
+  for (int i = 0; i < 3; i++) {
+    if (digitalRead(buttons[i]) == LOW) {
+      tone(BUZZER, notes[i]);
+      playing = true;
+      break;
+    }
+  }
+
+  if (!playing) {
+    noTone(BUZZER);
+  }
+}`,
+    "Reaction Timer": `const int LED = 9;
+const int BUTTON = 2;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  Serial.println("Get ready...");
+  delay(random(1000, 4000));
+
+  digitalWrite(LED, HIGH);
+  unsigned long startTime = millis();
+
+  while (digitalRead(BUTTON) == HIGH) {
+  }
+
+  unsigned long reaction = millis() - startTime;
+  digitalWrite(LED, LOW);
+
+  Serial.print("Reaction time: ");
+  Serial.print(reaction);
+  Serial.println(" ms");
+
+  delay(1500);
+}`,
+    "Secret Button Lock": `#include <Servo.h>
+
+Servo lockServo;
+const int BUTTON1 = 2;
+const int BUTTON2 = 3;
+
+void setup() {
+  lockServo.attach(9);
+  lockServo.write(0);
+  pinMode(BUTTON1, INPUT_PULLUP);
+  pinMode(BUTTON2, INPUT_PULLUP);
+}
+
+void loop() {
+  if (digitalRead(BUTTON1) == LOW &&
+      digitalRead(BUTTON2) == LOW) {
+    lockServo.write(90);
+    delay(1000);
+    lockServo.write(0);
+  }
+}`,
+    "Temperature Monitor": `const int SENSOR = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int raw = analogRead(SENSOR);
+
+  Serial.print("Sensor value: ");
+  Serial.println(raw);
+
+  delay(500);
+}`,
+    "Night Light": `const int LDR = A0;
+const int LED = 9;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  int light = analogRead(LDR);
+
+  if (light < 400) {
+    digitalWrite(LED, HIGH);
+  } else {
+    digitalWrite(LED, LOW);
+  }
+
+  delay(50);
+}`,
+    "Hello LCD": `#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+void setup() {
+  lcd.begin(16, 2);
+  lcd.setCursor(0, 0);
+  lcd.print("Hello, maker!");
+}
+
+void loop() {
+}`,
+    "LCD Knob Meter": `#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+const int POT = A0;
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  int value = analogRead(POT);
+  int percent = map(value, 0, 1023, 0, 100);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Value: ");
+  lcd.print(percent);
+  lcd.print("%   ");
+
+  delay(100);
+}`,
+    "Servo Scanner": `#include <Servo.h>
+
+Servo scanner;
+
+void setup() {
+  scanner.attach(9);
+}
+
+void loop() {
+  for (int angle = 0; angle <= 180; angle++) {
+    scanner.write(angle);
+    delay(10);
+  }
+
+  for (int angle = 180; angle >= 0; angle--) {
+    scanner.write(angle);
+    delay(10);
+  }
+}`,
+    "Alarm Button": `const int BUTTON = 2;
+const int BUZZER = 8;
+const int LED = 9;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    tone(BUZZER, 900);
+    digitalWrite(LED, HIGH);
+  } else {
+    noTone(BUZZER);
+    digitalWrite(LED, LOW);
+  }
+}`,
+    "Rain Alert": `const int SENSOR = A0;
+const int BUZZER = 8;
+const int THRESHOLD = 500;
+
+void setup() {
+  pinMode(BUZZER, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int wetness = analogRead(SENSOR);
+
+  Serial.println(wetness);
+
+  if (wetness < THRESHOLD) {
+    tone(BUZZER, 700);
+  } else {
+    noTone(BUZZER);
+  }
+
+  delay(100);
+}`,
+    "Distance Beeper": `const int TRIG = 7;
+const int ECHO = 6;
+const int BUZZER = 8;
+
+void setup() {
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH);
+  long distance = duration / 58;
+
+  if (distance > 0 && distance < 20) {
+    tone(BUZZER, 1000);
+  } else {
+    noTone(BUZZER);
+  }
+
+  delay(60);
+}`,
+    "Tiny Servo Radar": `#include <Servo.h>
+
+Servo radar;
+
+const int TRIG = 7;
+const int ECHO = 6;
+
+void setup() {
+  radar.attach(9);
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  Serial.begin(9600);
+}
+
+long readDistance() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+  return duration / 58;
+}
+
+void loop() {
+  for (int angle = 20; angle <= 160; angle += 5) {
+    radar.write(angle);
+    delay(50);
+
+    Serial.print(angle);
+    Serial.print(",");
+    Serial.println(readDistance());
+  }
+
+  for (int angle = 160; angle >= 20; angle -= 5) {
+    radar.write(angle);
+    delay(50);
+
+    Serial.print(angle);
+    Serial.print(",");
+    Serial.println(readDistance());
+  }
+}`,
+    "Electronic Dice": `const int BUTTON = 2;
+const int LED = 9;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    int number = random(1, 7);
+
+    Serial.print("Dice: ");
+    Serial.println(number);
+
+    for (int i = 0; i < number; i++) {
+      digitalWrite(LED, HIGH);
+      delay(100);
+      digitalWrite(LED, LOW);
+      delay(100);
+    }
+
+    delay(500);
+  }
+}`,
+    "Memory Game": `const int LEDS[] = {8, 9, 10, 11};
+const int BUTTONS[] = {2, 3, 4, 5};
+const int COUNT = 4;
+
+void setup() {
+  Serial.begin(9600);
+
+  for (int i = 0; i < COUNT; i++) {
+    pinMode(LEDS[i], OUTPUT);
+    pinMode(BUTTONS[i], INPUT_PULLUP);
+  }
+
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  int choice = random(0, COUNT);
+
+  digitalWrite(LEDS[choice], HIGH);
+  delay(500);
+  digitalWrite(LEDS[choice], LOW);
+
+  while (true) {
+    for (int i = 0; i < COUNT; i++) {
+      if (digitalRead(BUTTONS[i]) == LOW) {
+        Serial.println(i == choice ? "Correct!" : "Try again!");
+        delay(500);
+        return;
+      }
+    }
+  }
+}`,
+    "Mini Keyboard": `const int BUZZER = 8;
+const int BUTTONS[] = {2, 3, 4, 5};
+const int NOTES[] = {262, 330, 392, 523};
+
+void setup() {
+  for (int pin : BUTTONS) {
+    pinMode(pin, INPUT_PULLUP);
+  }
+}
+
+void loop() {
+  bool playing = false;
+
+  for (int i = 0; i < 4; i++) {
+    if (digitalRead(BUTTONS[i]) == LOW) {
+      tone(BUZZER, NOTES[i]);
+      playing = true;
+      break;
+    }
+  }
+
+  if (!playing) {
+    noTone(BUZZER);
+  }
+}`,
+    "Thermometer Display": `#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+const int SENSOR = A0;
+
+void setup() {
+  lcd.begin(16, 2);
+}
+
+void loop() {
+  int raw = analogRead(SENSOR);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Sensor: ");
+  lcd.print(raw);
+  lcd.print("    ");
+
+  delay(500);
+}`,
+    "RGB Mood Lamp": `const int RED = 9;
+const int GREEN = 10;
+const int BLUE = 11;
+
+void setup() {
+  pinMode(RED, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+  pinMode(BLUE, OUTPUT);
+}
+
+void loop() {
+  analogWrite(RED, 255);
+  analogWrite(GREEN, 80);
+  analogWrite(BLUE, 0);
+  delay(1000);
+
+  analogWrite(RED, 0);
+  analogWrite(GREEN, 255);
+  analogWrite(BLUE, 80);
+  delay(1000);
+
+  analogWrite(RED, 80);
+  analogWrite(GREEN, 0);
+  analogWrite(BLUE, 255);
+  delay(1000);
+}`,
+    "Mini Fan Controller": `const int MOTOR = 5;
+
+void setup() {
+  pinMode(MOTOR, OUTPUT);
+}
+
+void loop() {
+  analogWrite(MOTOR, 180);
+  delay(2000);
+
+  analogWrite(MOTOR, 0);
+  delay(1000);
+}`,
+    "IR Remote Lamp": `const int IR_PIN = 2;
+const int LED = 9;
+
+void setup() {
+  pinMode(IR_PIN, INPUT);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int signal = digitalRead(IR_PIN);
+
+  if (signal == LOW) {
+    digitalWrite(LED, HIGH);
+    Serial.println("IR signal detected");
+  } else {
+    digitalWrite(LED, LOW);
+  }
+
+  delay(20);
+}`,
+    "Serial Game": `const int LED = 9;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+  Serial.println("Press R, G, or B.");
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    char command = Serial.read();
+
+    if (command == 'r' || command == 'R') {
+      digitalWrite(LED, HIGH);
+      Serial.println("Red selected!");
+    }
+
+    if (command == 'g' || command == 'G') {
+      digitalWrite(LED, LOW);
+      Serial.println("Green selected!");
+    }
+  }
+}`,
+    "Serial Plotter Sensor": `const int SENSOR = A0;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  Serial.println(analogRead(SENSOR));
+  delay(20);
+}`,
+    "Digital Counter": `const int BUTTON = 2;
+int count = 0;
+bool previous = HIGH;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop() {
+  bool current = digitalRead(BUTTON);
+
+  if (previous == HIGH && current == LOW) {
+    count++;
+    Serial.print("Count: ");
+    Serial.println(count);
+    delay(30);
+  }
+
+  previous = current;
+}`,
+    "Plant Moisture Helper": `const int SENSOR = A0;
+const int LED = 9;
+const int DRY_LIMIT = 700;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  int moisture = analogRead(SENSOR);
+
+  Serial.print("Moisture: ");
+  Serial.println(moisture);
+
+  if (moisture > DRY_LIMIT) {
+    digitalWrite(LED, HIGH);
+  } else {
+    digitalWrite(LED, LOW);
+  }
+
+  delay(500);
+}`,
+    "Crosswalk Button": `const int RED = 10;
+const int YELLOW = 9;
+const int GREEN = 8;
+const int WALK = 7;
+const int BUTTON = 2;
+
+void setup() {
+  pinMode(RED, OUTPUT);
+  pinMode(YELLOW, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+  pinMode(WALK, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+
+  digitalWrite(GREEN, HIGH);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    digitalWrite(GREEN, LOW);
+    digitalWrite(YELLOW, HIGH);
+    delay(1000);
+
+    digitalWrite(YELLOW, LOW);
+    digitalWrite(RED, HIGH);
+    digitalWrite(WALK, HIGH);
+    delay(4000);
+
+    digitalWrite(WALK, LOW);
+    digitalWrite(RED, LOW);
+    digitalWrite(GREEN, HIGH);
+
+    delay(500);
+  }
+}`,
+    "Password Door Demo": `#include <Servo.h>
+
+Servo door;
+const String PASSWORD = "1234";
+String input = "";
+
+void setup() {
+  door.attach(9);
+  door.write(0);
+  Serial.begin(9600);
+  Serial.println("Type the password:");
+}
+
+void loop() {
+  while (Serial.available() > 0) {
+    char c = Serial.read();
+
+    if (c == '\\n' || c == '\\r') {
+      if (input == PASSWORD) {
+        Serial.println("Unlocked");
+        door.write(90);
+        delay(2000);
+        door.write(0);
+      } else {
+        Serial.println("Wrong password");
+      }
+
+      input = "";
+    } else {
+      input += c;
+    }
+  }
+}`,
+    "Mini Robot Brain": `const int TRIG = 7;
+const int ECHO = 6;
+const int LEFT_MOTOR = 5;
+const int RIGHT_MOTOR = 3;
+
+void setup() {
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  pinMode(LEFT_MOTOR, OUTPUT);
+  pinMode(RIGHT_MOTOR, OUTPUT);
+}
+
+long distanceCm() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+  return duration / 58;
+}
+
+void loop() {
+  long distance = distanceCm();
+
+  if (distance > 0 && distance < 20) {
+    analogWrite(LEFT_MOTOR, 0);
+    analogWrite(RIGHT_MOTOR, 0);
+    delay(300);
+
+    analogWrite(LEFT_MOTOR, 180);
+    analogWrite(RIGHT_MOTOR, 0);
+    delay(500);
+  } else {
+    analogWrite(LEFT_MOTOR, 180);
+    analogWrite(RIGHT_MOTOR, 180);
+  }
+}`
+  };
+
+    const extraCodes = {
+    "Mini Weather Station": `const int TEMP = A0;
+const int LIGHT = A1;
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int temperature = analogRead(TEMP);
+  int light = analogRead(LIGHT);
+
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print("  Light: ");
+  Serial.println(light);
+
+  delay(500);
+}`,
+    "Pedestrian Crossing": `const int RED = 10;
+const int YELLOW = 9;
+const int GREEN = 8;
+const int BUZZER = 7;
+const int BUTTON = 2;
+
+void setup() {
+  pinMode(RED, OUTPUT);
+  pinMode(YELLOW, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  digitalWrite(GREEN, HIGH);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    digitalWrite(GREEN, LOW);
+    digitalWrite(YELLOW, HIGH);
+    delay(1000);
+    digitalWrite(YELLOW, LOW);
+    digitalWrite(RED, HIGH);
+    tone(BUZZER, 900, 300);
+    delay(3000);
+    digitalWrite(RED, LOW);
+    digitalWrite(GREEN, HIGH);
+    delay(500);
+  }
+}`,
+    "Heartbeat LED": `const int LED = 9;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  for (int brightness = 0; brightness <= 255; brightness += 5) {
+    analogWrite(LED, brightness);
+    delay(8);
+  }
+
+  for (int brightness = 255; brightness >= 0; brightness -= 5) {
+    analogWrite(LED, brightness);
+    delay(8);
+  }
+
+  delay(150);
+}`,
+    "Musical Doorbell": `const int BUTTON = 2;
+const int BUZZER = 8;
+int melody[] = {262, 330, 392, 523};
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    for (int i = 0; i < 4; i++) {
+      tone(BUZZER, melody[i], 180);
+      delay(210);
+    }
+    delay(500);
+  }
+}`,
+    "Automatic Flashlight": `const int LDR = A0;
+const int LED = 9;
+const int DARK_LEVEL = 400;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+}
+
+void loop() {
+  int light = analogRead(LDR);
+
+  if (light < DARK_LEVEL) {
+    digitalWrite(LED, HIGH);
+  } else {
+    digitalWrite(LED, LOW);
+  }
+
+  delay(50);
+}`,
+    "Servo Gauge": `#include <Servo.h>
+
+Servo gauge;
+const int POT = A0;
+
+void setup() {
+  gauge.attach(9);
+}
+
+void loop() {
+  int value = analogRead(POT);
+  int angle = map(value, 0, 1023, 0, 180);
+  gauge.write(angle);
+  delay(15);
+}`,
+    "Motion Detector": `const int PIR = 2;
+const int LED = 9;
+
+void setup() {
+  pinMode(PIR, INPUT);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (digitalRead(PIR) == HIGH) {
+    digitalWrite(LED, HIGH);
+    Serial.println("Motion detected!");
+  } else {
+    digitalWrite(LED, LOW);
+  }
+
+  delay(50);
+}`,
+    "Water Level Alarm": `const int SENSOR = A0;
+const int LED = 9;
+const int BUZZER = 8;
+const int WATER_LEVEL = 600;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  int level = analogRead(SENSOR);
+
+  if (level > WATER_LEVEL) {
+    digitalWrite(LED, HIGH);
+    tone(BUZZER, 1000);
+  } else {
+    digitalWrite(LED, LOW);
+    noTone(BUZZER);
+  }
+
+  delay(100);
+}`,
+    "Reaction Scoreboard": `const int LED = 9;
+const int BUTTON = 2;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  long total = 0;
+
+  for (int round = 1; round <= 3; round++) {
+    delay(random(1000, 4000));
+    digitalWrite(LED, HIGH);
+
+    unsigned long start = millis();
+
+    while (digitalRead(BUTTON) == HIGH) {
+    }
+
+    total += millis() - start;
+    digitalWrite(LED, LOW);
+    delay(1000);
+  }
+
+  Serial.print("Average reaction: ");
+  Serial.print(total / 3);
+  Serial.println(" ms");
+
+  delay(3000);
+}`,
+    "Mini Slot Machine": `const int BUTTON = 2;
+const int LEDS[] = {8, 9, 10};
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+
+  for (int i = 0; i < 3; i++) {
+    pinMode(LEDS[i], OUTPUT);
+  }
+
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    for (int spin = 0; spin < 15; spin++) {
+      int light = spin % 3;
+
+      for (int i = 0; i < 3; i++) {
+        digitalWrite(LEDS[i], LOW);
+      }
+
+      digitalWrite(LEDS[light], HIGH);
+      delay(60 + spin * 8);
+    }
+
+    delay(500);
+  }
+}`,
+    "Temperature Warning": `const int SENSOR = A0;
+const int LED = 9;
+const int BUZZER = 8;
+const int WARNING_LEVEL = 600;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  int temperature = analogRead(SENSOR);
+
+  if (temperature > WARNING_LEVEL) {
+    digitalWrite(LED, HIGH);
+    tone(BUZZER, 900);
+  } else {
+    digitalWrite(LED, LOW);
+    noTone(BUZZER);
+  }
+
+  delay(100);
+}`,
+    "Light Theremin": `const int LDR = A0;
+const int BUZZER = 8;
+
+void setup() {
+  pinMode(BUZZER, OUTPUT);
+}
+
+void loop() {
+  int light = analogRead(LDR);
+  int frequency = map(light, 0, 1023, 150, 1500);
+
+  tone(BUZZER, frequency);
+  delay(20);
+}`,
+    "Button Target Game": `const int BUTTON = 2;
+const int LED = 9;
+int score = 0;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(LED, OUTPUT);
+  Serial.begin(9600);
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  digitalWrite(LED, LOW);
+  delay(random(500, 2000));
+
+  digitalWrite(LED, HIGH);
+  unsigned long start = millis();
+
+  while (millis() - start < 1000) {
+    if (digitalRead(BUTTON) == LOW) {
+      score++;
+      Serial.print("Score: ");
+      Serial.println(score);
+      digitalWrite(LED, LOW);
+      delay(500);
+      return;
+    }
+  }
+
+  digitalWrite(LED, LOW);
+  Serial.println("Miss!");
+  delay(500);
+}`,
+    "LED Spinner": `const int LEDS[] = {3, 4, 5, 6, 7, 8};
+
+void setup() {
+  for (int i = 0; i < 6; i++) {
+    pinMode(LEDS[i], OUTPUT);
+  }
+}
+
+void loop() {
+  for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < 6; j++) {
+      digitalWrite(LEDS[j], LOW);
+    }
+
+    digitalWrite(LEDS[i], HIGH);
+    delay(100);
+  }
+}`,
+    "Ultrasonic Parking Helper": `const int TRIG = 7;
+const int ECHO = 6;
+const int BUZZER = 8;
+
+void setup() {
+  pinMode(TRIG, OUTPUT);
+  pinMode(ECHO, INPUT);
+  pinMode(BUZZER, OUTPUT);
+}
+
+long getDistance() {
+  digitalWrite(TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG, LOW);
+
+  long duration = pulseIn(ECHO, HIGH, 30000);
+
+  if (duration == 0) {
+    return 999;
+  }
+
+  return duration / 58;
+}
+
+void loop() {
+  long distance = getDistance();
+
+  if (distance < 10) {
+    tone(BUZZER, 1200, 80);
+    delay(80);
+  } else if (distance < 25) {
+    tone(BUZZER, 900, 150);
+    delay(150);
+  } else if (distance < 50) {
+    tone(BUZZER, 600, 300);
+    delay(300);
+  } else {
+    noTone(BUZZER);
+    delay(100);
+  }
+}`
+  };
+
+  return extraCodes[p[2]] || codes[p[2]] || String(p[8] || "").replaceAll("\\n", "\n");
+}
+
+function codeLines(code){
+  return String(code).split(/\r?\n/).map((line,i) =>
+    `<span class="code-line"><span class="line-no">${i+1}</span><span class="code-text">${escapeHTML(line) || " "}</span></span>`
+  ).join("");
+}
+
+function show(p){
+  const code = getArduinoCode(p);
+
+  document.getElementById("detail").innerHTML = `
+    <div class="eyebrow">BUILD MODE · Project ${p[0]} · ${p[3]}</div>
+    <h1 style="font-size:42px">${p[1]} ${p[2]}</h1>
+    <p class="hero">${p[5]}</p>
+
+    <div class="build-section">
+      <h3>🧰 Parts you need</h3>
+      <p>${p[6]}</p>
+    </div>
+
+    <div class="build-section">
+      <h3>🔌 Wiring — connect it like this</h3>
+      ${wiringRows(p)}
+      <p class="tip">⚠️ Module pinouts can vary. Check the labels/datasheet before connecting power.</p>
+    </div>
+
+    <div class="build-section">
+      <h3>🛠️ Build steps</h3>
+      ${buildSteps()}
+    </div>
+
+    <div class="build-section">
+      <div class="code-head">
+        <h3>💻 Arduino IDE code</h3>
+        <button class="copy" onclick="copyProjectCode()">📋 Copy code</button>
+      </div>
+      <p class="desc">Copy this sketch directly into the Arduino IDE. Line numbers are only for display.</p>
+      <pre id="codebox"><code class="code-editor">${codeLines(code)}</code></pre>
+      <textarea id="raw-code" hidden></textarea>
+    </div>
+
+    <div class="build-section">
+      <h3>📌 Project notes</h3>
+      <p>${p[7]}</p>
+    </div>
+
+    <button class="build-btn" onclick="closeModal()">✓ Done building</button>`;
+
+  document.getElementById("raw-code").value = code;
+  document.getElementById("modal").classList.add("show");
+}
+
+function copyProjectCode(){
+  const source = document.getElementById("raw-code");
+  const code = source ? source.value : "";
+
+  const done = () => {
+    const b = document.querySelector(".copy");
+    if (b) {
+      b.textContent = "✓ Copied!";
+      setTimeout(() => b.textContent = "📋 Copy code", 1200);
+    }
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(code).then(done).catch(() => fallbackCopy(code));
+  } else {
+    fallbackCopy(code);
+  }
+}
+
+function fallbackCopy(code){
+  const area = document.createElement("textarea");
+  area.value = code;
+  area.style.position = "fixed";
+  area.style.left = "-9999px";
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(area);
+
+  const b = document.querySelector(".copy");
+  if (b) {
+    b.textContent = "✓ Copied!";
+    setTimeout(() => b.textContent = "📋 Copy code", 1200);
+  }
+}
+
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+search.oninput=render;level.onchange=render;part.onchange=render;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});render();
+
+function buildCombo(){
+  const selected=[...document.querySelectorAll('.combo-check input:checked')].map(x=>x.value);
+  const out=document.getElementById('combo-result');
+
+  if(selected.length<2){
+    out.innerHTML='<div class="combo-empty">Pick at least 2 modules. Try Motion + Distance + RGB for a mini smart security robot!</div>';
+    return;
+  }
+
+  const has=(name)=>selected.includes(name);
+
+  let title="Ultimate Arduino Mash-Up";
+  let description="A custom multi-part project combining: "+selected.join(", ")+".";
+  let parts=new Set(["Arduino Uno","Breadboard","Jumper wires"]);
+
+  selected.forEach(x=>{
+    const partMap={
+      "Motion Detector":["PIR motion sensor","LED","220Ω resistor"],
+      "Distance Beeper":["HC-SR04 ultrasonic sensor","Passive buzzer"],
+      "RGB Mood Lamp":["RGB LED","3×220Ω resistors"],
+      "Servo Scanner":["SG90 servo"],
+      "Buzzer Piano":["Passive buzzer","Pushbutton"],
+      "Night Light":["LDR","10kΩ resistor"],
+      "Pushbutton Lamp":["Pushbutton","220Ω resistor"],
+      "Temperature Monitor":["Analog temperature sensor"]
+    };
+    (partMap[x]||[]).forEach(p=>parts.add(p));
+  });
+
+  if(has("Motion Detector") && has("Distance Beeper")){
+    title="Smart Security Station";
+    description="Motion detection wakes the station up, then the ultrasonic sensor checks for a nearby object and the buzzer warns you.";
+  } else if(has("Night Light") && has("Motion Detector") && has("RGB Mood Lamp")){
+    title="Smart Night Guardian";
+    description="The light sensor decides when it is dark, the PIR detects movement, and the RGB LED becomes an automatic status lamp.";
+  } else if(has("Distance Beeper") && has("Servo Scanner")){
+    title="Mini Radar Scanner";
+    description="The servo sweeps the ultrasonic sensor while the buzzer reports when something gets close.";
+  } else if(has("Temperature Monitor") && has("RGB Mood Lamp")){
+    title="Temperature Mood Lamp";
+    description="A temperature reading changes the RGB lamp between cool, normal, and warm status colors.";
+  } else if(has("Pushbutton Lamp") && has("Buzzer Piano")){
+    title="Button-Controlled Sound Machine";
+    description="Buttons can trigger lights and sounds, turning simple input parts into a mini instrument.";
+  }
+
+  let wiring=[];
+  let pinMap={
+    "Motion Detector":["PIR OUT → D2","Motion LED → D9 through 220Ω"],
+    "Distance Beeper":["HC-SR04 TRIG → D7","HC-SR04 ECHO → D6","Buzzer → D8"],
+    "RGB Mood Lamp":["RGB red → D9","RGB green → D10","RGB blue → D11"],
+    "Servo Scanner":["Servo signal → D5"],
+    "Buzzer Piano":["Buzzer → D8","Piano buttons → D2, D3, D4"],
+    "Night Light":["LDR divider → A0"],
+    "Pushbutton Lamp":["Button → D3 using INPUT_PULLUP"],
+    "Temperature Monitor":["Temperature sensor → A1"]
+  };
+  selected.forEach(x=>(pinMap[x]||[]).forEach(w=>wiring.push(w)));
+
+  // Generate a single beginner-friendly Arduino sketch with non-conflicting pins.
+  let code=`// ${title}
+const int STATUS_LED = 13;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(STATUS_LED, OUTPUT);
+`;
+
+  if(has("Motion Detector")) code+=`  pinMode(2, INPUT); // PIR OUT
+`;
+  if(has("Distance Beeper")) code+=`  pinMode(7, OUTPUT); // TRIG
+  pinMode(6, INPUT);  // ECHO
+  pinMode(8, OUTPUT); // buzzer
+`;
+  if(has("RGB Mood Lamp")) code+=`  pinMode(9, OUTPUT);
+  pinMode(10, OUTPUT);
+  pinMode(11, OUTPUT);
+`;
+  if(has("Servo Scanner")) code+=`  // Servo module: signal on D5
+`;
+  if(has("Night Light")) code+=`  // LDR voltage divider on A0
+`;
+  if(has("Pushbutton Lamp")) code+=`  pinMode(3, INPUT_PULLUP);
+`;
+  if(has("Buzzer Piano")) code+=`  pinMode(4, INPUT_PULLUP);
+  pinMode(5, INPUT_PULLUP);
+`;
+
+  code+=`}
+
+`;
+
+  if(has("Distance Beeper")){
+    code+=`long readDistance() {
+  digitalWrite(7, LOW);
+  delayMicroseconds(2);
+  digitalWrite(7, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(7, LOW);
+
+  long duration = pulseIn(6, HIGH, 30000);
+  return duration == 0 ? 999 : duration / 58;
+}
+
+`;
+  }
+
+  code+=`void loop() {
+`;
+  if(has("Motion Detector")){
+    code+=`  bool motion = digitalRead(2);
+`;
+  }
+  if(has("Night Light")){
+    code+=`  int light = analogRead(A0);
+`;
+  }
+  if(has("Temperature Monitor")){
+    code+=`  int temperature = analogRead(A1);
+  Serial.print("Temperature: ");
+  Serial.println(temperature);
+`;
+  }
+  if(has("Distance Beeper")){
+    code+=`  long distance = readDistance();
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+
+  if (distance < 25) {
+    tone(8, 900);
+  } else {
+    noTone(8);
+  }
+`;
+  }
+  if(has("Motion Detector")){
+    code+=`  if (motion) {
+    digitalWrite(STATUS_LED, HIGH);
+  } else {
+    digitalWrite(STATUS_LED, LOW);
+  }
+`;
+  }
+  if(has("Night Light") && has("Motion Detector")){
+    code+=`  if (light < 400 && motion) {
+    digitalWrite(9, HIGH);
+  }
+`;
+  }
+  if(has("RGB Mood Lamp") && !has("Night Light")){
+    code+=`  analogWrite(9, 120);
+  analogWrite(10, 30);
+  analogWrite(11, 180);
+`;
+  }
+  if(has("RGB Mood Lamp") && has("Night Light")){
+    code+=`  if (light < 400) {
+    analogWrite(9, 100);
+    analogWrite(10, 30);
+    analogWrite(11, 180);
+  } else {
+    analogWrite(9, 0);
+    analogWrite(10, 0);
+    analogWrite(11, 0);
+  }
+`;
+  }
+  if(has("Pushbutton Lamp")){
+    code+=`  if (digitalRead(3) == LOW) {
+    digitalWrite(STATUS_LED, HIGH);
+  }
+`;
+  }
+  code+=`  delay(50);
+}
+`;
+
+  out.innerHTML=`<div class="combo-card">
+    <div class="eyebrow">✨ GENERATED PROJECT</div>
+    <h2>${title}</h2>
+    <p>${description}</p>
+    <h3>🧰 Combined parts</h3>
+    <div class="combo-parts">${[...parts].map(x=>`<span class="combo-pill">${x}</span>`).join("")}</div>
+    <h3>🔌 Combined wiring</h3>
+    <ul>${wiring.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <p class="tip">⚠️ This is a mash-up generator: check your exact module pinout and make sure your parts share a common GND before powering the circuit.</p>
+    <div class="combo-code">
+      <div class="code-head"><h3>💻 Arduino IDE code</h3><button class="copy" onclick="copyComboCode()">📋 Copy code</button></div>
+      <pre><code class="code-editor" id="combo-code-display">${codeLines(code)}</code></pre>
+      <textarea id="combo-raw" hidden></textarea>
+    </div>
+  </div>`;
+  document.getElementById('combo-raw').value=code;
+}
+
+function copyComboCode(){
+  const code=document.getElementById('combo-raw').value;
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(code);
+  }else{
+    const a=document.createElement('textarea');
+    a.value=code;a.style.position='fixed';a.style.left='-9999px';
+    document.body.appendChild(a);a.select();document.execCommand('copy');document.body.removeChild(a);
+  }
+  const b=document.querySelector('#combo-result .copy');
+  if(b){b.textContent='✓ Copied!';setTimeout(()=>b.textContent='📋 Copy code',1200);}
+}
+
+const gameCodes = {
+  reaction: `const int LED = 9;
+const int BUTTON = 2;
+
+void setup() {
+  pinMode(LED, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  Serial.begin(9600);
+  randomSeed(analogRead(A5));
+}
+
+void loop() {
+  Serial.println("Get ready...");
+  digitalWrite(LED, LOW);
+
+  delay(random(2000, 5000));
+
+  Serial.println("GO!");
+  digitalWrite(LED, HIGH);
+
+  unsigned long start = millis();
+
+  while (digitalRead(BUTTON) == HIGH) {
+  }
+
+  unsigned long reaction = millis() - start;
+
+  digitalWrite(LED, LOW);
+
+  Serial.print("Your reaction time: ");
+  Serial.print(reaction);
+  Serial.println(" ms");
+
+  delay(2500);
+}`,
+  target: `const int BUTTON = 2;
+const int LEDS[] = {8, 9, 10};
+int score = 0;
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+
+  for (int i = 0; i < 3; i++) {
+    pinMode(LEDS[i], OUTPUT);
+  }
+
+  randomSeed(analogRead(A5));
+  Serial.begin(9600);
+}
+
+void loop() {
+  int target = random(0, 3);
+
+  for (int i = 0; i < 3; i++) {
+    digitalWrite(LEDS[i], LOW);
+  }
+
+  digitalWrite(LEDS[target], HIGH);
+
+  unsigned long start = millis();
+  bool hit = false;
+
+  while (millis() - start < 1200) {
+    if (digitalRead(BUTTON) == LOW) {
+      hit = true;
+      break;
+    }
+  }
+
+  digitalWrite(LEDS[target], LOW);
+
+  if (hit) {
+    score++;
+    Serial.print("HIT! Score: ");
+    Serial.println(score);
+  } else {
+    Serial.print("Miss! Score: ");
+    Serial.println(score);
+  }
+
+  delay(700);
+}`,
+  simon: `const int LEDS[] = {8, 9, 10};
+const int BUTTONS[] = {2, 3, 4};
+
+int sequence[20];
+int level = 1;
+
+void setup() {
+  Serial.begin(9600);
+
+  for (int i = 0; i < 3; i++) {
+    pinMode(LEDS[i], OUTPUT);
+    pinMode(BUTTONS[i], INPUT_PULLUP);
+  }
+
+  randomSeed(analogRead(A5));
+}
+
+void showStep(int step) {
+  digitalWrite(LEDS[step], HIGH);
+  delay(350);
+  digitalWrite(LEDS[step], LOW);
+  delay(150);
+}
+
+int waitForButton() {
+  while (true) {
+    for (int i = 0; i < 3; i++) {
+      if (digitalRead(BUTTONS[i]) == LOW) {
+        delay(40);
+
+        while (digitalRead(BUTTONS[i]) == LOW) {
+        }
+
+        return i;
+      }
+    }
+  }
+}
+
+void loop() {
+  sequence[level - 1] = random(0, 3);
+
+  Serial.print("Level ");
+  Serial.println(level);
+
+  for (int i = 0; i < level; i++) {
+    showStep(sequence[i]);
+  }
+
+  for (int i = 0; i < level; i++) {
+    int pressed = waitForButton();
+
+    if (pressed != sequence[i]) {
+      Serial.println("GAME OVER!");
+      level = 1;
+      delay(2000);
+      return;
+    }
+
+    digitalWrite(LEDS[pressed], HIGH);
+    delay(100);
+    digitalWrite(LEDS[pressed], LOW);
+  }
+
+  Serial.println("Correct!");
+  level++;
+
+  if (level > 20) {
+    Serial.println("YOU BEAT THE GAME!");
+    level = 1;
+    delay(3000);
+  }
+
+  delay(700);
+}`,
+  dice: `const int BUTTON = 2;
+const int LEDS[] = {3, 4, 5, 6, 7, 8};
+
+void setup() {
+  pinMode(BUTTON, INPUT_PULLUP);
+
+  for (int i = 0; i < 6; i++) {
+    pinMode(LEDS[i], OUTPUT);
+  }
+
+  randomSeed(analogRead(A5));
+}
+
+void showNumber(int number) {
+  for (int i = 0; i < 6; i++) {
+    digitalWrite(LEDS[i], LOW);
+  }
+
+  for (int i = 0; i < number; i++) {
+    digitalWrite(LEDS[i], HIGH);
+  }
+}
+
+void loop() {
+  if (digitalRead(BUTTON) == LOW) {
+    int number = random(1, 7);
+
+    for (int i = 0; i < 12; i++) {
+      showNumber(random(1, 7));
+      delay(70 + i * 12);
+    }
+
+    showNumber(number);
+    delay(1500);
+
+    while (digitalRead(BUTTON) == LOW) {
+    }
+  }
+}
+`
+};
+
+function loadGameCodeBoxes() {
+  for (const [id, code] of Object.entries(gameCodes)) {
+    const el = document.getElementById("game-" + id);
+    if (el) el.textContent = code;
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", loadGameCodeBoxes);
+} else {
+  loadGameCodeBoxes();
+}
+
+function copyGameCode(id, button) {
+  const code = gameCodes[id];
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(code);
+  } else {
+    const area = document.createElement("textarea");
+    area.value = code;
+    area.style.position = "fixed";
+    area.style.left = "-9999px";
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand("copy");
+    document.body.removeChild(area);
+  }
+
+  if (button) {
+    button.textContent = "✓ Copied!";
+    setTimeout(() => button.textContent = "📋 Copy code", 1200);
+  }
+}
+
+</script>
+</body>
+</html>
